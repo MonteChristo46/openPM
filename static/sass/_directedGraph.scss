@@ -1,0 +1,39 @@
+#discoverySection {
+  width: inherit;
+  height: inherit;
+
+  .forceDirectedGraph {
+    .nodes {
+      transform: translate(400px, 200px);
+    }
+    .links {
+      transform: translate(400px, 200px);
+    }
+
+    .links line {
+      stroke: #999;
+      stroke-opacity: 0.6;
+    }
+
+    .nodes circle {
+      stroke: #fff;
+      stroke-width: 1.5px;
+    }
+  }
+
+  .processFlow{
+    text{
+      fill: white;
+    }
+    rect{
+      fill: #e75d6c;
+      fill-opacity: 1;
+    }
+
+    .links path {
+      stroke: #ccc;
+      z-index: -1;
+      position: absolute;
+    }
+  }
+}

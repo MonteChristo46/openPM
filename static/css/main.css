@@ -1,0 +1,70 @@
+.tab {
+  float: right; }
+
+#uploadFunction {
+  cursor: pointer; }
+
+#navUpload {
+  display: none; }
+
+#navUpload > ul > li {
+  float: right; }
+
+#navSearch {
+  display: none; }
+  #navSearch i {
+    cursor: pointer; }
+
+#selectSearch {
+  position: absolute; }
+
+#processSection {
+  height: 100vh; }
+
+#preloader {
+  display: none; }
+
+#filterSection {
+  height: 100vh; }
+
+#filters > form {
+  float: left;
+  margin-top: 25px; }
+
+.sliders {
+  transform: rotate(-90deg); }
+
+.labels {
+  text-align: center; }
+
+#removeButton {
+  border: 1.5px solid #ccc;
+  cursor: pointer;
+  border-radius: 999px;
+  color: #575757;
+  padding: 2px; }
+
+#discoverySection {
+  width: inherit;
+  height: inherit; }
+  #discoverySection .forceDirectedGraph .nodes {
+    transform: translate(400px, 200px); }
+  #discoverySection .forceDirectedGraph .links {
+    transform: translate(400px, 200px); }
+  #discoverySection .forceDirectedGraph .links line {
+    stroke: #999;
+    stroke-opacity: 0.6; }
+  #discoverySection .forceDirectedGraph .nodes circle {
+    stroke: #fff;
+    stroke-width: 1.5px; }
+  #discoverySection .processFlow text {
+    fill: white; }
+  #discoverySection .processFlow rect {
+    fill: #e75d6c;
+    fill-opacity: 1; }
+  #discoverySection .processFlow .links path {
+    stroke: #ccc;
+    z-index: -1;
+    position: absolute; }
+
+/*# sourceMappingURL=main.css.map */

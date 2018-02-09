@@ -1,0 +1,26 @@
+.tab {
+    float: right;
+}
+
+#uploadFunction {
+    cursor: pointer;
+}
+
+#navUpload {
+    display: none;
+}
+
+#navUpload > ul > li {
+    float: right;
+}
+
+#navSearch{
+    display: none;
+    i{
+        cursor: pointer
+    }
+}
+
+#selectSearch{
+    position: absolute;
+}
