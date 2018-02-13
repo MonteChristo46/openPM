@@ -15,7 +15,7 @@ new Vue({
             this.searchResults = []
             var searchResults = this.searchResults;
             $("#searchResults").empty();
-            $("#navSearch").find(".tabs").eq(0).css("height", "65px");
+            $("#nav-search").find(".tabs").eq(0).css("height", "65px");
             $.ajax({
                 url: '/search/' + this.searchTerm,
                 type: 'post',
@@ -23,7 +23,7 @@ new Vue({
                     response = JSON.parse(response);
                     $("#searchResults").append("Results: " + response.length);
                     if (response.length > 0) {
-                        $("#navSearch").find(".tabs").eq(0).css("height", "200px");
+                        $("#nav-search").find(".tabs").eq(0).css("height", "200px");
                         for (var i = 0; i <= response.length; i++) {
                             console.log(response[i]);
                             searchResults.push(response[i])

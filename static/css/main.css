@@ -1,70 +1,104 @@
 .tab {
-  float: right; }
+  float: right;
+}
 
 #uploadFunction {
-  cursor: pointer; }
+  cursor: pointer;
+}
 
-#navUpload {
-  display: none; }
+#nav-upload {
+  display: none;
+}
 
-#navUpload > ul > li {
-  float: right; }
+#nav-upload > ul > li {
+  float: right;
+}
 
-#navSearch {
-  display: none; }
-  #navSearch i {
-    cursor: pointer; }
+#nav-search {
+  display: none;
+}
+#nav-search i {
+  cursor: pointer;
+}
 
 #selectSearch {
-  position: absolute; }
+  position: absolute;
+}
 
 #processSection {
-  height: 100vh; }
+  height: 100vh;
+}
 
 #preloader {
-  display: none; }
+  display: none;
+}
+
+#discoverySection {
+  width: 960px;
+  height: 100vh;
+}
 
 #filterSection {
-  height: 100vh; }
+  height: 100vh;
+  padding-left: 5px;
+  border-left: 1px solid #ccc;
+}
 
 #filters > form {
   float: left;
-  margin-top: 25px; }
+  margin-top: 25px;
+}
 
 .sliders {
-  transform: rotate(-90deg); }
+  transform: rotate(-90deg);
+}
 
 .labels {
-  text-align: center; }
+  text-align: center;
+}
 
 #removeButton {
   border: 1.5px solid #ccc;
   cursor: pointer;
   border-radius: 999px;
   color: #575757;
-  padding: 2px; }
+  padding: 2px;
+}
 
 #discoverySection {
   width: inherit;
-  height: inherit; }
-  #discoverySection .forceDirectedGraph .nodes {
-    transform: translate(400px, 200px); }
-  #discoverySection .forceDirectedGraph .links {
-    transform: translate(400px, 200px); }
-  #discoverySection .forceDirectedGraph .links line {
-    stroke: #999;
-    stroke-opacity: 0.6; }
-  #discoverySection .forceDirectedGraph .nodes circle {
-    stroke: #fff;
-    stroke-width: 1.5px; }
-  #discoverySection .processFlow text {
-    fill: white; }
-  #discoverySection .processFlow rect {
-    fill: #e75d6c;
-    fill-opacity: 1; }
-  #discoverySection .processFlow .links path {
-    stroke: #ccc;
-    z-index: -1;
-    position: absolute; }
+  height: inherit;
+}
+#discoverySection .forceDirectedGraph .nodes {
+  transform: translate(0px, -30px);
+}
+#discoverySection .forceDirectedGraph .links {
+  transform: translate(0px, -30px);
+}
+#discoverySection .forceDirectedGraph .links line {
+  stroke: #ccc;
+  stroke-opacity: 0.6;
+}
+#discoverySection .forceDirectedGraph .nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+#discoverySection .processFlow text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+#discoverySection .processFlow .node rect {
+  stroke: #333;
+  fill: #fff;
+}
+#discoverySection .processFlow .edgePath path {
+  stroke: #333;
+  fill: #333;
+  stroke-width: 1.5px;
+}
+#discoverySection .processFlow .node text {
+  pointer-events: none;
+}
 
 /*# sourceMappingURL=main.css.map */

@@ -1,11 +1,19 @@
 function minimalForceDirectedGraph() {
 
     //Getting width and height of the svg
-    var svg = d3.select("#discoverySection"),
-        width = +svg.attr(width),
-        height = +svg.attr(height);
 
-    svg.selectAll("*").remove(); //clean svg container before new graph is created
+    var processSection = $("#processSection");
+    var width = processSection.width();
+    var height = processSection.height();
+
+    d3.select("#discoverySection").selectAll("*").remove(); //clean svg container before new graph is created
+
+    var svg = d3.select("#discoverySection")
+        .append("svg")
+        .attr("class", "forceDirectedGraph")
+        .attr("width", width)
+        .attr("height", height);
+
 
     d3.json("/data", function (error, json) {
         console.log("D3 script executed with following data: ");
@@ -165,11 +173,86 @@ function minimalForceDirectedGraph() {
 }
 
 function drawProcessFlow() {
+    d3.select("#discoverySection").selectAll("*").remove(); //clean svg container before new graph is created
+
+    d3.json("/data", function (json) {
+        var nodes = json.nodes;
+        var links = json.links;
+
+        //Creating Graph Object
+        var graph = new dagreD3.graphlib.Graph().setGraph({});
+
+        //Parsing json into graph object
+        nodes.forEach(function (node) {
+            graph.setNode(node.name, {label: node.name});
+        });
+        links.forEach(function (link) {
+            //Set edge and interpolate it
+            graph.setEdge(link.source, link.target, {curve: d3.curveBasis})
+        });
+
+        var svg = d3.select("#discoverySection")
+            .append("svg")
+            .attr("class", "processFlow")
+            .attr("width", function () {
+                return ($("#discoverySection").width()-50)
+            })
+            .attr("height", function(){
+                 return ($("#discoverySection").height()-50)
+            });
+        var svgGroup = svg.append('g');
+
+        // Create the renderer
+        var render = new dagreD3.render();
+
+        // Run the renderer. This is what draws the final graph.
+        // After Rendering Graph gets width and height (graph.graph() -> Returns width and height and)
+        // and nodes are getting x and y coordinates
+        render(svgGroup, graph);
+
+        // Get Dagre Graph dimensions
+        var graphWidth = graph.graph().width + 80;
+        var graphHeight = graph.graph().height + 0;
+
+        // Get SVG dimensions
+        var width = parseInt(svg.attr("width"));
+        var height = parseInt(svg.attr("height"));
+
+        // Calculate applicable scale for zoom
+        //TODO check the mathematical background behind this
+        var zoomScale = Math.max(Math.min(width / graphWidth, height / graphHeight));
+
+        //Calculate yCenter
+        //Graph height needs first to be scaled. Imagine the graph has mor height then the svg
+        var xCenterOffset = (svg.attr('width') - (graph.graph().width) * zoomScale) / 2;
+        var yCenterOffset = (svg.attr('height') - (graph.graph().height) * zoomScale) / 2;
+        svgGroup.attr('transform', 'translate('+xCenterOffset+', ' + yCenterOffset + ')' + ' scale(' + zoomScale + ')');
+
+        //Zoom Handler
+        var zoom_handler = d3.zoom()
+            .on("zoom", zoom_actions);
+
+        //Give zoom_handler standard values from which he can translater/scale (zoom)
+        svg.call(zoom_handler.transform, d3.zoomIdentity.translate(xCenterOffset, yCenterOffset).scale(zoomScale));
+
+        //Call zoom handler on svg
+        zoom_handler(svg);
+
+        /*Functions*/
+        function zoom_actions() {
+            svgGroup.attr("transform", d3.event.transform)
+        }
+    });
+}
+
+function drawProcessFlow_old() {
 
     //Getting width and height of the svg adding inner margin
-    var svg = d3.select("#discoverySection"),
-        svgWidth = +svg.attr("width") - 60,
-        svgHeight = +svg.attr("height") - 60;
+    var svg = d3.select("#discoverySection")
+        .append("svg")
+        .attr("class", "processFlow")
+        .attr("width", width)
+        .attr("height", height);
 
     svg.selectAll("*").remove(); //clean svg container before new graph is created
 
@@ -262,15 +345,15 @@ function drawProcessFlow() {
             //TODO-fixme for loop would be much more efficient because break statement can be used. Imagine you have a lot of nodes.
             nodes.forEach(function (node) {
                 if (nodeSource === node.name) {
-                   coordinates.set("source", node)
+                    coordinates.set("source", node)
                 }
                 if (nodeTarget === node.name) {
-                   coordinates.set("target", node)
+                    coordinates.set("target", node)
                 }
             });
 
             coordinates.set("sameLayer", false);
-            if(coordinates.get("source").layer ===  coordinates.get("target").layer){
+            if (coordinates.get("source").layer === coordinates.get("target").layer) {
                 coordinates.set("sameLayer", true)
             }
             return coordinates;
@@ -305,13 +388,13 @@ function drawProcessFlow() {
                 var targetY = coordinates.get("target").Y;
                 var sourceCoordinates = [sourceX + (nodeWidth / 2), sourceY + (nodeHeight / 2)];
 
-                if(coordinates.get("sameLayer")){
-                    if(targetX < sourceX){
-                         var targetCoordinates = [targetX + nodeWidth, targetY + (nodeHeight / 2)]; //--> sameLayer
-                    } else{
-                          var targetCoordinates = [targetX, targetY + (nodeHeight / 2)]; //--> sameLayer
+                if (coordinates.get("sameLayer")) {
+                    if (targetX < sourceX) {
+                        var targetCoordinates = [targetX + nodeWidth, targetY + (nodeHeight / 2)]; //--> sameLayer
+                    } else {
+                        var targetCoordinates = [targetX, targetY + (nodeHeight / 2)]; //--> sameLayer
                     }
-                }else{
+                } else {
                     var targetCoordinates = [targetX + (nodeWidth / 2), targetY]; //--> DifferentLayer
                 }
 
@@ -319,7 +402,7 @@ function drawProcessFlow() {
                 console.log(pathData);
                 return lineGenerator(pathData);
             })
-           .style("marker-end", "url(#suit)");
+            .style("marker-end", "url(#suit)");
 
         var events = g.append("g")
             .attr("class", "nodes");
@@ -332,33 +415,31 @@ function drawProcessFlow() {
                 return "layer_" + d.layer;
             });
 
-         event.append("rect")
+        event.append("rect")
             .attr("id", function (d) {
                 return d.name
             })
-             .attr("x", function(d){
-                 return d.X
-             })
-             .attr("y", function(d){
-                 return d.Y
-             })
+            .attr("x", function (d) {
+                return d.X
+            })
+            .attr("y", function (d) {
+                return d.Y
+            })
             .attr("height", nodeHeight)
             .attr("width", nodeWidth);
 
 
         event.append("text")
-            .attr("x", function(d){
+            .attr("x", function (d) {
                 return (d.X + 8)
 
             })
-            .attr("y", function(d){
-                return d.Y + (nodeHeight/1.8)
+            .attr("y", function (d) {
+                return d.Y + (nodeHeight / 1.8)
             })
             .text(function (d) {
                 return d.name
             });
-
-
 
 
         /*Adding the zoom capability*/
@@ -373,7 +454,7 @@ function drawProcessFlow() {
             g.attr("transform", d3.event.transform)
         };
 
-         svg.append("defs").selectAll("marker")
+        svg.append("defs").selectAll("marker")
             .data(["suit", "licensing", "resolved"])
             .enter().append("marker")
             .attr("id", function (d) {
@@ -395,9 +476,21 @@ function drawProcessFlow() {
 
 function drawExample() {
 
+    var processSection = $("#processSection");
+    var width = processSection.width();
+    var height = processSection.height();
+
+    var svg = d3.select("#discoverySection")
+        .append("svg")
+        .attr("class", "forceDirectedGraph")
+        .attr("width", width)
+        .attr("height", height);
+
+    /*
     var svg = d3.select("#discoverySection"),
         width = +svg.attr(width),
         height = +svg.attr(height);
+        */
 
     var data = {
         "nodes": [
@@ -486,7 +579,6 @@ function drawExample() {
 
     //Setting up the Simulation
     var simulation = d3.forceSimulation().nodes(nodes);
-    console.log(simulation);
 
     simulation
         .force("charge_force", d3.forceManyBody().strength(-1950))

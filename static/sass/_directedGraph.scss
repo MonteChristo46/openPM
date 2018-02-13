@@ -4,14 +4,14 @@
 
   .forceDirectedGraph {
     .nodes {
-      transform: translate(400px, 200px);
+      transform: translate(0px, -30px);
     }
     .links {
-      transform: translate(400px, 200px);
+      transform: translate(0px, -30px);
     }
 
     .links line {
-      stroke: #999;
+      stroke: #ccc;
       stroke-opacity: 0.6;
     }
 
@@ -22,18 +22,25 @@
   }
 
   .processFlow{
-    text{
-      fill: white;
-    }
-    rect{
-      fill: #e75d6c;
-      fill-opacity: 1;
+   text {
+        font-weight: 300;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+        font-size: 14px;
     }
 
-    .links path {
-      stroke: #ccc;
-      z-index: -1;
-      position: absolute;
+    .node rect {
+        stroke: #333;
+        fill: #fff;
+    }
+
+    .edgePath path {
+        stroke: #333;
+        fill: #333;
+        stroke-width: 1.5px;
+    }
+
+    .node text {
+        pointer-events: none;
     }
   }
 }
