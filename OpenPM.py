@@ -60,10 +60,12 @@ def get_data():
     global global_path
     if global_path != "":
         process = Pm.Process(global_path)
+
         process_discovery_obj = Pm.Discovery(process)
         print("follower: ..")
         # TODO fix the iteration
         direct_follower = process_discovery_obj.get_direct_followers("concept:name", True)
+        print("direct follower found")
         causal_dependencies = Pm.Discovery.get_causal_dependencies(direct_follower)
         print(causal_dependencies)
         return process_discovery_obj.to_json(causal_dependencies, True)
