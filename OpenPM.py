@@ -7,7 +7,7 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 import openPM as Pm
-'''Daniel'''
+
 # Flask
 app = Flask(__name__)
 CORS(app)  # To solve the header issue
@@ -69,9 +69,6 @@ def get_data():
     else:
         print("Global_Path is empty")
         return ""
-
-
-
 
 
 # TODO-fixme this is not an solution. A file database would make much more sense.
