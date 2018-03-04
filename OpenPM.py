@@ -7,8 +7,9 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 import openPM as Pm
-# Richard
+
 # Flask
+
 app = Flask(__name__)
 CORS(app)  # To solve the header issue
 
@@ -22,7 +23,7 @@ global_path = ""
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    return render_template("sidebar.html")
 
 
 @app.route('/upload', methods=["POST"])

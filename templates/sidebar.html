@@ -1,0 +1,42 @@
+{% extends "process.html" %}
+
+{% block right_side %}
+    <div class="col s3">
+        <div id="filterSection">
+            <div class="section">
+                <h5>Filter Section</h5>
+                <div id="filters" class="container row">
+                    <form action="#" class="col s6">
+                        <p class="range-field">
+                            <input type="range" class="sliders" id="activityFilter" value="100" min="0"
+                                   max="100"/>
+                        </p>
+                    </form>
+                    <form action="#" class="col s6">
+                        <p class="range-field">
+                            <input type="range" class="sliders" id="pathFilter" value="100" min="0" max="100"/>
+                        </p>
+                    </form>
+                </div>
+                <div class="container row labels">
+                    <span class="col s6">Activities</span>
+                    <span class="col s6">Path</span>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5>Statistics Section</h5>
+                <span>Connected Labels: </span>
+                <div class="row">
+                    <div class="col s9">
+                        <span v-for="label in labels">#[[label]] </span>
+                    </div>
+                    <div class="col s3">
+                        <span id="removeButton" v-if="labels.length" v-on:click="removeLabel">- 1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

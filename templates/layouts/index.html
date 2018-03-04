@@ -95,64 +95,11 @@
     </header>
     <main>
         <div class="row">
-            <div class="col s9">
-                <div id="processSection">
-                    <h4>[[processName]]</h4>
-                    <div id="preloader">
-                        <div class="preloader-wrapper big active">
-                            <div class="spinner-layer spinner-blue-only">
-                                <div class="circle-clipper left">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="gap-patch">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="circle-clipper right">
-                                    <div class="circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="discoverySection"></div>
-                </div>
-            </div>
-            <div class="col s3">
-                <div id="filterSection">
-                    <div class="section">
-                        <h5>Filter Section</h5>
-                        <div id="filters" class="container row">
-                            <form action="#" class="col s6">
-                                <p class="range-field">
-                                    <input type="range" class="sliders" id="activityFilter" value="100" min="0"
-                                           max="100"/>
-                                </p>
-                            </form>
-                            <form action="#" class="col s6">
-                                <p class="range-field">
-                                    <input type="range" class="sliders" id="pathFilter" value="100" min="0" max="100"/>
-                                </p>
-                            </form>
-                        </div>
-                        <div class="container row labels">
-                            <span class="col s6">Activities</span>
-                            <span class="col s6">Path</span>
-                        </div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="section">
-                        <h5>Statistics Section</h5>
-                        <span>Connected Labels: </span>
-                        <div class="row">
-                            <div class="col s9">
-                                <span v-for="label in labels">#[[label]] </span>
-                            </div>
-                            <div class="col s3">
-                                <span id="removeButton" v-if="labels.length" v-on:click="removeLabel">- 1</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% block left_side %}
+            {% endblock %}
+
+            {% block right_side %}
+            {% endblock %}
         </div>
     </main>
     <footer class="page-footer">
