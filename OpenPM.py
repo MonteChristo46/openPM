@@ -28,7 +28,6 @@ def index():
 
 @app.route('/upload', methods=["POST"])
 def upload_xes():
-    # TODO Achtung FileSize
     if request.method == "POST":
         if 'file' not in request.files:
             return "No XES file uploaded!"
@@ -45,7 +44,7 @@ def upload_xes():
                 # TODO Makes Notes to the basedir shit - Why is at not working as I want?
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 xes.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], secure_filename(process_name)))
-                # TODO would be nice if we could parse the file directly.
+                # TODO would be nice if we could parse the file directly without saving in /temp
                 global global_path
                 path = os.path.join(basedir, app.config['UPLOAD_FOLDER'] + secure_filename(process_name))
                 global_path = path
