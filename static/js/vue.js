@@ -36,6 +36,7 @@ new Vue({
         },
         ajax: function () {
             this.processName = document.getElementById("inputProcessName").value;
+            console.log(this.processName);
             var file = $("#fileInput").prop("files")[0];
             var form_data = new FormData();
             form_data.append('file', file);

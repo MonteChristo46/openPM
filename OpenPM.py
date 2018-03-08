@@ -27,8 +27,45 @@ def index():
 
 
 @app.route('/upload', methods=["POST"])
+def upload_file():
+    # TODO Achtung FileSize
+    # richard Turn upload function into general upload not only XES. Maybe restrict fileSize to 50mb
+    if request.method == "POST":
+        if 'file' not in request.files:
+            return "No XES file uploaded!"
+        else:
+            file = request.files['file']
+            _, file_extension = os.path.splitext(file.filename)
+            # FIXME Process Name is not handed over in request. Check Vue.js
+            process_name = request.values["processName"]
+            labels = request.form.getlist("labels")[0].split(
+                ",")  # WTF? Warum split? Warum kommt das Ding nicht normal an?
+            for label in labels:
+                process_name = process_name + "_" + label
+            process_name = process_name + file_extension
+            # TODO delete when bug above is fixed
+            if process_name == "":
+                process_name = "Logfile" + file_extension
+
+            if file_extension in ['.xes', '.csv']:
+                # TODO Makes Notes to the basedir shit - Why is at not working as I want?
+                basedir = os.path.abspath(os.path.dirname(__file__))
+                secured_filename = secure_filename(process_name)
+                file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], secured_filename))
+                # TODO would be nice if we could parse the file directly.
+                global global_path
+                path = os.path.join(basedir, app.config['UPLOAD_FOLDER'], secured_filename)
+                global_path = path
+                print("uploaded..")
+                return "File has been uploaded"
+            else:
+                return "Only XES or CSV upload allowed"
+
+"""
+@app.route('/upload', methods=["POST"])
 def upload_xes():
     # TODO Achtung FileSize
+    # richard Turn upload function into general upload not only XES. Maybe restrict fileSize to 50mb 
     if request.method == "POST":
         if 'file' not in request.files:
             return "No XES file uploaded!"
@@ -53,8 +90,7 @@ def upload_xes():
                 return "File has been uploaded"
             else:
                 return "Only XES upload allowed"
-
-
+"""
 @app.route('/data', methods=["GET", "POST"])
 def get_data():
     global global_path
@@ -63,7 +99,8 @@ def get_data():
         process_discovery_obj = Pm.Discovery(process)
         print("follower: ..")
         # TODO fix the iteration
-        direct_follower = process_discovery_obj.get_direct_followers("concept:name", True)
+        # TODO Not hardcoded concept:name here! Won't work with other naming
+        direct_follower = process_discovery_obj.get_direct_followers("Activity", True)
         causal_dependencies = Pm.Discovery.get_causal_dependencies(direct_follower)
         print(causal_dependencies)
         return process_discovery_obj.to_json(causal_dependencies, True)
