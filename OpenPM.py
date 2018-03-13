@@ -82,7 +82,7 @@ def upload_xes():
                 # TODO Makes Notes to the basedir shit - Why is at not working as I want?
                 basedir = os.path.abspath(os.path.dirname(__file__))
                 xes.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], secure_filename(process_name)))
-                # TODO would be nice if we could parse the file directly.
+                # TODO would be nice if we could parse the file directly without saving in /temp
                 global global_path
                 path = os.path.join(basedir, app.config['UPLOAD_FOLDER'] + secure_filename(process_name))
                 global_path = path
@@ -96,11 +96,13 @@ def get_data():
     global global_path
     if global_path != "":
         process = Pm.Process(global_path)
+
         process_discovery_obj = Pm.Discovery(process)
         print("follower: ..")
         # TODO fix the iteration
         # TODO Not hardcoded concept:name here! Won't work with other naming
         direct_follower = process_discovery_obj.get_direct_followers("Activity", True)
+        print("direct follower found")
         causal_dependencies = Pm.Discovery.get_causal_dependencies(direct_follower)
         print(causal_dependencies)
         return process_discovery_obj.to_json(causal_dependencies, True)
