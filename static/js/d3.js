@@ -172,10 +172,10 @@ function minimalForceDirectedGraph() {
 
 }
 
-function drawProcessFlow() {
+function drawProcessFlow(json_dict) {
     d3.select("#discoverySection").selectAll("*").remove(); //clean svg container before new graph is created
 
-    d3.json("/data", function (json) {
+    d3.json(json_dict, function (json) {
         var nodes = json.nodes;
         var links = json.links;
 

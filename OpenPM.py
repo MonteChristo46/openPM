@@ -1,11 +1,11 @@
 import os
 import json
-
+from lxml import etree
 from flask import Flask
 from flask import render_template, request
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-
+import csv
 import openPM as Pm
 
 # Flask
@@ -26,13 +26,50 @@ def index():
     return render_template("sidebar.html")
 
 
+def create_json_response(path:str , file_extension:str):
+    """
+    This methods creates the JSON File required to build the modal in the front end.
+    JSON contains names of all activities in the csv or xes.
+    :param path: String to the file
+    :param file_extension: XES or CSV
+    :return: JSON
+    """
+    # Start to create JSON file to create Modal in front end
+    json_data = {}
+    json_data["attributes"] = []
+    if file_extension == ".csv":
+        with open(path) as csv_file:
+            reader = csv.reader(csv_file)
+            header = reader.__next__()
+            for item in header:
+                json_activities = dict()
+                json_activities["name"] = item
+                json_data["attributes"].append(json_activities)
+            print(json_data)
+            return json_data
+    elif file_extension == ".xes":
+        root = etree.parse(path)
+        first_event = root.xpath("/log/trace/event")[0]
+        for attribute in first_event.iterchildren():
+            json_activities = dict()
+            json_activities["name"] = attribute.attrib["key"]
+            json_data["attributes"].append(json_activities)
+        print(json_data)
+        return json_data
+    else:
+        return "No valid file uploaded"
+
+
 @app.route('/upload', methods=["POST"])
 def upload_file():
-    # TODO Achtung FileSize
-    # richard Turn upload function into general upload not only XES. Maybe restrict fileSize to 50mb
+    """
+    This method uploads the supplied file if it is .xes or .csv and hands over the header information to JS.
+    :return: JSON
+    """
+    # richard Maybe restrict fileSize to 50mb
     if request.method == "POST":
         if 'file' not in request.files:
-            return "No XES file uploaded!"
+            return "No file uploaded!"
         else:
             file = request.files['file']
             _, file_extension = os.path.splitext(file.filename)
@@ -57,9 +94,11 @@ def upload_file():
                 path = os.path.join(basedir, app.config['UPLOAD_FOLDER'], secured_filename)
                 global_path = path
                 print("uploaded..")
-                return "File has been uploaded"
+                return create_json_response(path, file_extension)
             else:
                 return "Only XES or CSV upload allowed"
+
+
 
 """
 @app.route('/upload', methods=["POST"])

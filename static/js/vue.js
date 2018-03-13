@@ -16,7 +16,7 @@ new Vue({
             var searchResults = this.searchResults;
             $("#searchResults").empty();
             $("#nav-search").find(".tabs").eq(0).css("height", "65px");
-            $.ajax({
+            $.upload_ajax({
                 url: '/search/' + this.searchTerm,
                 type: 'post',
                 success: function (response) {
@@ -34,7 +34,7 @@ new Vue({
             });
             this.searchResults = searchResults
         },
-        ajax: function () {
+        upload_ajax: function () {
             this.processName = document.getElementById("inputProcessName").value;
             console.log(this.processName);
             var file = $("#fileInput").prop("files")[0];
@@ -53,9 +53,32 @@ new Vue({
                 success: function (response) {
                     alert(response);
                     console.log(response);
-                    if (response === "File has been uploaded") {
+                    if (response["activities"].length > 0) {
                         //minimalForceDirectedGraph();
-                        drawProcessFlow();
+                        /*
+                            Show modal and create bubble chart
+                        */
+                        //drawBubbleChart();
+                    }
+                }
+            });
+
+        },
+        modal_submit_ajax: function () {
+            // TODO Get clicked bubbles as JSON File and pass to d3.js !!
+            $.ajax({
+                url: '/data',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: [],
+                type: 'post',
+                success: function (response) {
+                    alert(response);
+                    console.log(response);
+                    // TODO Take links or start or end nodes
+                    if (response["links"].length > 0) {
+                        drawProcessFlow(response);
                     }
                 }
             });
