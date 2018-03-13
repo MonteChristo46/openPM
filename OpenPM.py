@@ -100,7 +100,7 @@ def get_data():
         process_discovery_obj = Pm.Discovery(process)
         print("follower: ..")
         # TODO fix the iteration
-        # TODO Not hardcoded concept:name here! Won't work with other naming
+        # TODO Not hardcoded concept:name here! Won't work with other naming! Is the case here and in Discovery.py!!!
         direct_follower = process_discovery_obj.get_direct_followers("Activity", True)
         print("direct follower found")
         causal_dependencies = Pm.Discovery.get_causal_dependencies(direct_follower)
